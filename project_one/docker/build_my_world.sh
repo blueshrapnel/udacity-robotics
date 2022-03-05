@@ -4,7 +4,7 @@
 
 # docker build -t noetic .
 
-source='/home/karen/workspace/udacity-rocotics' && target='/home/ros'
+source='/home/karen/workspace/udacity-robotics' && target='/home/ros'
 
 docker run -it \
     --gpus all \
