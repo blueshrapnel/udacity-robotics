@@ -3,6 +3,7 @@
 
 .config
 
+.rviz
 .ros
 .gazebo
 .ignition
