@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- send urdf to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find simple_chassis_bot)/urdf/simple_chassis_bot.xacro'" />
+
+  <!-- SendT joint values-->
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+  </node>
+
+  <!-- Send robot states to tf -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+</launch>
