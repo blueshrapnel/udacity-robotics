@@ -1,0 +1,219 @@
+<?xml version='1.0'?>
+
+<robot name="simple_chassis_bot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <!-- import Rviz color definitions -->
+  <xacro:include filename="$(find simple_chassis_bot)/urdf/materials.xacro" />
+  <!-- import inertial macros for calculating mass etc. of shapes -->
+  <xacro:include filename="$(find simple_chassis_bot)/urdf/inertial_macros.xacro" />
+  <!--  gazebo plugins -->
+  <xacro:include filename="$(find simple_chassis_bot)/urdf/simple_chassis_bot.gazebo" />
+
+
+  <xacro:property name="wheel_radius" value="0.08" />
+  <xacro:property name="chassis_length" value="0.4" />
+  <xacro:property name="chassis_width" value="0.2" />
+  <xacro:property name="chassis_height" value="0.13" />
+
+  <!-- base link -->
+  <!-- for a differential drive robot easiest if this is centre of wheel axle, this is also the centre of rotation for the robot -->
+  <link name="base_link"></link>
+
+  <!-- chassis -->
+  <!-- origin just behind the centre of the base_link -->
+  <joint name="chassis_joint" type="fixed">
+    <parent link="base_link" />
+    <child link="chassis" />
+    <origin xyz="-0.1 0 0" />
+  </joint>
+  
+  <link name="chassis">
+    <visual>
+      <origin xyz="${chassis_length/2} 0 ${chassis_height/3}" />
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
+      </geometry>
+      <material name="orange" />
+    </visual>
+    <collision>
+      <origin xyz="${chassis_length/2} 0 ${chassis_height/3}" />
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="2" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
+      <origin xyz="${chassis_length/2} 0 ${chassis_height/3}" rpy="0 0 0" />
+    </xacro:inertial_box>
+  </link>
+
+  <gazebo reference="chassis">
+    <material>
+      Gazebo/Orange
+  </material>
+  </gazebo>
+
+
+  <!-- left wheel -->
+
+  <joint name="left_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="left_wheel" />
+    <origin xyz="0 0.122 0" rpy="-${pi/2} 0 0" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <link name="left_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="${wheel_radius}" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="${wheel_radius}" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="0.1" length="0.04" radius="${wheel_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+
+  <gazebo reference="left_wheel">
+    <material>
+      Gazebo/Black
+  </material>
+  </gazebo>
+
+  <!-- right wheel -->
+
+  <joint name="right_wheel_joint" type="continuous">
+    <parent link="base_link" />
+    <child link="right_wheel" />
+    <origin xyz="0 -0.122 0" rpy="${pi/2} 0 0" />
+    <axis xyz="0 0 -1" />
+  </joint>
+
+  <link name="right_wheel">
+    <visual>
+      <geometry>
+        <cylinder length="0.04" radius="${wheel_radius}" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="0.04" radius="${wheel_radius}" />
+      </geometry>
+    </collision>
+    <xacro:inertial_cylinder mass="0.1" length="0.04" radius="${wheel_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_cylinder>
+  </link>
+
+  <gazebo reference="right_wheel">
+    <material>
+      Gazebo/Black
+  </material>
+  </gazebo>
+
+  <!-- caster_wheel -->
+
+  <joint name="caster_wheel_joint" type="fixed">
+    <parent link="chassis" />
+    <child link="caster_wheel" />
+    <origin xyz="0.3 0 0" rpy="0 0 0" />
+  </joint>
+
+  <link name="caster_wheel">
+    <visual>
+      <geometry>
+        <sphere radius="0.075" />
+      </geometry>
+      <material name="black" />
+    </visual>
+    <collision>
+      <geometry>
+        <sphere radius="0.075" />
+      </geometry>
+    </collision>
+    <xacro:inertial_sphere mass="0.1" radius="${wheel_radius}">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_sphere>
+  </link>
+
+  <gazebo reference="caster_wheel">
+    <material>
+      Gazebo/Black    
+  </material>
+    <!-- reduce friction instead of making it continuous in all directions -->
+    <mu1 value="0.001" />
+    <mu2 value="0.001" />
+  </gazebo>
+
+
+  <!-- sensors -->
+  <!-- camera  -->
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0.4 0 ${chassis_height*2/3}" rpy="0 0 0" />
+    <parent link="chassis" />
+    <child link="camera" />
+    <axis xyz="0.0 1.0 0.0" />
+  </joint>
+
+  <link name="camera">
+    <visual name="camera_visual">
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <geometry>
+        <box size="0.05 0.05 0.05" />
+      </geometry>
+      <material name="grey"/>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <geometry>
+        <box size="0.05 0.05 0.05" />
+      </geometry>
+    </collision>
+    <xacro:inertial_box mass="0.1" x="0.05" y="0.05" z="0.05">
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:inertial_box>
+  </link>
+
+  <gazebo reference="camera">
+    <material>
+      Gazebo/Gray  
+    </material>
+  </gazebo>
+
+
+  <!-- lidar sensor - hokuyo -->
+  <joint name="hokuyo_joint" type="fixed">
+    <origin xyz="0.15 0.0 ${chassis_height*2/3+0.05}" rpy="0.0 0.0 0.0" />
+    <parent link="chassis" />
+    <child link="hokuyo" />
+    <axis xyz="0.0 1 0.0" />
+  </joint>
+
+  <link name="hokuyo">
+    <inertial>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <mass value="1e-5" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+    <visual name="hokuyo_visual">
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <geometry>
+        <mesh filename="package://simple_chassis_bot/meshes/hokuyo.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+  </link>
+
+</robot>

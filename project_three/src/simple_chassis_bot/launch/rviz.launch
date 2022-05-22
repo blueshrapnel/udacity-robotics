@@ -1,0 +1,13 @@
+<launch>
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find simple_chassis_bot)/urdf/simple_chassis_bot.xacro'" />
+    
+    <arg name="rvizconfig" default="$(find simple_chassis_bot)/rviz/default_config.rviz" />
+
+    <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+
+      <!-- Send robot states to tf -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" />
+</launch>
