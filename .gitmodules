@@ -1,3 +1,6 @@
 [submodule "project_three/src/teleop_twist_keyboard"]
 	path = project_three/src/teleop_twist_keyboard
 	url = https://github.com/ros-teleop/teleop_twist_keyboard
+[submodule "project_four/src/teleop_twist_keyboard"]
+	path = project_four/src/teleop_twist_keyboard
+	url = https://github.com/ros-teleop/teleop_twist_keyboard
