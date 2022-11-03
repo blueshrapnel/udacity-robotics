@@ -4,6 +4,8 @@
 
 # docker build -t noetic .
 
+# remember to run xhost +local:[marlyn]
+
 source='/home/karen/workspace/udacity-robotics' && target='/home/ros'
 
 docker run -it \
