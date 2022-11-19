@@ -3,7 +3,7 @@
 <launch>
 
   <!-- World File -->
-  <arg name="world_file" default="$(find simple_chassis_bot)/worlds/ground_floor_ball.world"/>
+  <arg name="world_file" default="$(find simple_chassis_bot)/worlds/ground_floor_extras.world"/>
 
   <!-- default rviz configuration -->
   <arg name="rvizconfig" default="$(find simple_chassis_bot)/rviz/plugin_config.rviz" />

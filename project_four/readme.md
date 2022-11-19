@@ -7,10 +7,16 @@ Open the following terminals, source each one first with `source devel/setup.bas
 `roslaunch simple_chassis_bot world.launch`
 * Launch the tele-op controller, [teleop_twist_keyboard](https://github.com/ros-teleop/teleop_twist_keyboard):
 `rosrun teleop_twist_keyboard teleop_twist_keyboard.py`
-* 
+* Start the mapping node `roslaunch simple_chassis_bot mapping.launch`
+* Start localisation node `roslaunch simple_chassis_bot localisation.launch` 
 
+## Screenshots of mapping
+* ![](db-view-3d-map.png)
+* ![](db-view-car-wheels.png)
 
+### Database File
+* compressed 
+[`src/simple_chassis_bot/src/maps/ground_floor_extras_car.zip`](src/simple_chassis_bot/maps/ground_floor_extras_car.zip)
 
 ## Screenshots of localisation
-* first screen shot taken before any localisation, ![screenshot before any localisation](localisation-01.png)
-* second sheet a short while later after moving around, ![screenshot after moving around](localisation-02.png)
+*  ![screenshot with car localised after moving around](localising.png)
