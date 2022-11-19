@@ -15,7 +15,7 @@ Open the following terminals, source each one first with `source devel/setup.bas
 * ![](db-view-car-wheels.png)
 
 ### Database File
-* compressed 
+* compressed and uploaded to DropBox, too large for github - uploading to DropBox
 [`src/simple_chassis_bot/src/maps/ground_floor_extras_car.zip`](src/simple_chassis_bot/maps/ground_floor_extras_car.zip)
 
 ## Screenshots of localisation
