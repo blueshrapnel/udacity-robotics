@@ -16,7 +16,7 @@ Open the following terminals, source each one first with `source devel/setup.bas
 
 ### Database File
 * compressed and uploaded to DropBox, too large for github - uploading to DropBox
-[`src/simple_chassis_bot/src/maps/ground_floor_extras_car.zip`](src/simple_chassis_bot/maps/ground_floor_extras_car.zip)
+[`ground_floor_extras_car.zip`](https://www.dropbox.com/s/144v9e7z6dbutgi/ground_floor_extras_car.zip?dl=0)
 
 ## Screenshots of localisation
 *  ![screenshot with car localised after moving around](localising.png)
