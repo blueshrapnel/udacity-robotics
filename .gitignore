@@ -263,3 +263,7 @@ cython_debug/
 #.idea/
 
 .vscode/
+
+tutorial_mcl/RoboND-MCL-Lab
+
+tutorial_RRBot/src/gazebo_ros_demos
