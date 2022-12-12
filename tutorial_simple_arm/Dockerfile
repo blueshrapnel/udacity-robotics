@@ -21,8 +21,9 @@ wget \
 git \
 bash-completion \
 sudo \
-ros-noetic-effort-controllers \
 && rm -rf /var/lib/apt/lists/*
+
+# ros-noetic-effort-controllers \
 
 
 # create a user that shares the same rights as the host

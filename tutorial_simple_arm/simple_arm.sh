@@ -3,7 +3,7 @@
 # source='/home/karen/workspace/udacity-robotics' && target='/home/ros/'
 
 # docker build -t noetic .
-# added sudo apt install 
+# added sudo apt install ros-noetic-effort-controller
 
 source='/home/karen/workspace/udacity-robotics' && target='/home/ros'
 
