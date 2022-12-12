@@ -1,0 +1,6 @@
+<launch>
+    <!-- rviz -->
+    <arg name="rvizconfig" default="/home/ros/tutorial_kalman/kinetic/src/EKFLab.rviz" />
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(arg rvizconfig)" />
+</launch>

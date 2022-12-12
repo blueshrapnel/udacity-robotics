@@ -4,3 +4,9 @@
 [submodule "project_four/src/teleop_twist_keyboard"]
 	path = project_four/src/teleop_twist_keyboard
 	url = https://github.com/ros-teleop/teleop_twist_keyboard
+[submodule "tutorial_path_planning/toy-map/RoboND-A-Visualization"]
+	path = tutorial_path_planning/toy-map/RoboND-A-Visualization
+	url = https://github.com/udacity/RoboND-A-Visualization
+[submodule "project_five_noetic/src/turtlebot3"]
+	path = project_five_noetic/src/turtlebot3
+	url = https://github.com/ROBOTIS-GIT/turtlebot3.git
