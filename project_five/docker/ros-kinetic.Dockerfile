@@ -1,4 +1,6 @@
 # Udacity Robotics course 
+# Doesn't work with gazebo - needs open gl etc
+# use nvidia-kinetic.Dockerfile
 
 ARG BASE_TAG=kinetic
 FROM osrf/ros:${BASE_TAG}-desktop-full

@@ -10,3 +10,15 @@
 [submodule "project_five_noetic/src/turtlebot3"]
 	path = project_five_noetic/src/turtlebot3
 	url = https://github.com/ROBOTIS-GIT/turtlebot3.git
+[submodule "project_five/src/slam_gmapping"]
+	path = project_five/src/slam_gmapping
+	url = https://github.com/ros-perception/slam_gmapping
+[submodule "project_five/src/turtlebot"]
+	path = project_five/src/turtlebot
+	url = https://github.com/turtlebot/turtlebot
+[submodule "project_five/src/turtlebot_interactions"]
+	path = project_five/src/turtlebot_interactions
+	url = https://github.com/turtlebot/turtlebot_interactions
+[submodule "project_five/src/turtlebot_simulator"]
+	path = project_five/src/turtlebot_simulator
+	url = https://github.com/turtlebot/turtlebot_simulator

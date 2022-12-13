@@ -5,7 +5,7 @@
 # source='/home/karen/workspace/udacity-robotics' && target='/home/ros/'
 
 # in same directory as Dockerfile, docker build -t kinetic-roomba .
-source='/home/karen/workspace/udacity-robotics/project_five' && target='/home/ros/project_five'
+source='/home/karen/learning/udacity-robotics/project_five' && target='/home/ros/project_five'
 
 docker run -it \
     --gpus all \
@@ -17,6 +17,6 @@ docker run -it \
     --workdir="/home/ros/project_five" \
     --privileged \
     --net=host \
-    roomba \
+    simple-roomba \
     bash
  
