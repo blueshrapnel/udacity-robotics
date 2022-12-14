@@ -1,9 +1,27 @@
 # Udacity Project "Home Service Robot"
 
 ## Workspace Docker Container
-There is a problem installing dependencies for the Turtlebot packages in ROS Noetic, so downgrading to ROS Kinetic. :-(
-See the `readme.md` in the docker directory for comments on building a container with ROS kinetic, access to nvidia gpu and Gazebo.  Note I tried to update Gazebo to a higher version, however turtlebot has  
-In a docker container (see docker.Dockerfile, `docker build -t roomba .`), initialise the workspace as explained below.
+There is a problem installing dependencies for the Turtlebot packages in ROS Noetic, so I tried to create a docker container with ROS kinetic, and access to an nvidia gpu and Gazebo (9 or 7). However none of that worked seemlessly, on the udactiy workspace there were expired signatures and in the docker container I couldn't get the realsense dependency installed.  
+
+### TurtleBot3
+So instead I am using turtlebot3 and Noetic, ensuring compatibility with `openslam gmapping`.  See `turtlebot3.Dockerfile` then add the following to the src dir
+```
+cd src
+git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3
+git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3_simulations
+cd ..
+catkin_make
+```
+Test launch with 
+```
+export TURTLEBOT3_MODEL=burger
+roslaunch turtlebot3_gazebo turtlebot3_world.launch
+```
+
+More information available from:
+* https://emanual.robotis.com/docs/en/platform/turtlebot3/simulation/
+* https://www.youtube.com/watch?v=ji2kQXgCjeM
+
 
 ```
 mkdir -p ~/project_five/src
@@ -12,6 +30,9 @@ catkin_init_workspace
 cd ..
 catkin_make
 ```
+
+### World File
+Using the basic ground floor world create for earlier tutorials, with some extra features added from the repo of [gazebo models](https://github.com/osrf/gazebo_models).  These are stored in the  `src/turtlebot3/turtlebot3_gazebo/` `launch`, `models` and `worlds` directories.
 
 ```
 sudo apt update

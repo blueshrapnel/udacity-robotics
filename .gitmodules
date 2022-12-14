@@ -22,3 +22,12 @@
 [submodule "project_five/src/turtlebot_simulator"]
 	path = project_five/src/turtlebot_simulator
 	url = https://github.com/turtlebot/turtlebot_simulator
+[submodule "project_five/turtlebot3_simulations"]
+	path = project_five/turtlebot3_simulations
+	url = https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git
+[submodule "project_five/src/turtlebot3"]
+	path = project_five/src/turtlebot3
+	url = https://github.com/ROBOTIS-GIT/turtlebot3
+[submodule "project_five/src/turtlebot3_simulations"]
+	path = project_five/src/turtlebot3_simulations
+	url = https://github.com/ROBOTIS-GIT/turtlebot3_simulations
