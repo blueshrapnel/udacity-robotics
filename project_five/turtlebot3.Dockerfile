@@ -38,6 +38,8 @@ RUN apt-get install -y ros-noetic-dynamixel-sdk
 RUN apt-get install -y ros-noetic-turtlebot3-msgs 
 RUN apt-get install -y ros-noetic-turtlebot3 
 
+RUN apt-get install -y tmux
+
 ENV TURTLEBOT3_MODEL=burger
 
 # ros-noetic-map-server \
@@ -61,6 +63,10 @@ RUN groupadd $USERNAME
 RUN useradd -ms /bin/bash -g $USERNAME $USERNAME
 RUN sh -c 'echo "$USERNAME ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
 USER $USERNAME
+
+RUN sh -c 'echo "source $HOME/project_five/devel/setup.bash" >> ~/.bashrc'
+RUN sh -c 'echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc'
+RUN sh -c 'echo "source $HOME/.bashrc" >> ~/.profile'
 
 # entrypoint
 COPY ros_entrypoint.sh /usr/local/bin/ros_entrypoint.sh

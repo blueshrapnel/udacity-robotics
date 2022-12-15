@@ -5,6 +5,7 @@ source "/opt/ros/noetic/setup.bash"
 # working directory must be a catkin workspace
 if [ -d "devel" ]
 then 
+    catkin_make
     echo " ---> sourcing devel/setup.bash"
     source "devel/setup.bash"
 fi

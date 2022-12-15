@@ -4,7 +4,8 @@
 There is a problem installing dependencies for the Turtlebot packages in ROS Noetic, so I tried to create a docker container with ROS kinetic, and access to an nvidia gpu and Gazebo (9 or 7). However none of that worked seemlessly, on the udactiy workspace there were expired signatures and in the docker container I couldn't get the realsense dependency installed.  
 
 ### TurtleBot3
-So instead I am using turtlebot3 and Noetic, ensuring compatibility with `openslam gmapping`.  See `turtlebot3.Dockerfile` then add the following to the src dir
+So instead I am using turtlebot3 and Noetic, ensuring compatibility with `openslam gmapping`.  Added to the `.bashrc` to source the necessary files for opening terminals.  See `turtlebot3.Dockerfile`, build with `docker build -t noetic-tbot3 -f turtlebot3.Dockerfile . `, which you can then start with `./home_service_robot.sh -i noetic-tbot3`.   The following git repositories have been added to the src dir as submodules.
+
 ```
 cd src
 git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3
@@ -14,7 +15,7 @@ catkin_make
 ```
 Test launch with 
 ```
-export TURTLEBOT3_MODEL=burger
+export TURTLEBOT3_MODEL=burger  # this is set in the Dockerfile
 roslaunch turtlebot3_gazebo turtlebot3_world.launch
 ```
 
@@ -59,12 +60,15 @@ rosdep -i install turtlebot_gazebo
 ``` 
 The change to the project workspace `project_five` and run `catkin_make`, then`source devel\setup.bash` etc.
 
-## Launching Turtlebot world
+## Testing Slam with Turtlebot3
 
-Using the corridor world that comes with `turtlebot_simulator`.  To open `xterm` with a default font and size: `xterm -fa 'Monospace' -fs 14`. Testing SLAM in the `turtlebot_simulation/corridor_world`:
-![](screen-shots/gazebo-corridor-world.png)
+To open `xterm` with a default font and size: `xterm -fa 'Monospace' -fs 14`. The custom world created for previous projects is quite large, so mapping the whole space takes quite a while.  The screen shot below is taken in the early stages. 
 
-* `roslaunch turtlebot_gazebo turtlebot_world.launch world_file:=$(rospack find turtlebot_gazebo)/worlds/corridor.world`
-* `roslaunch turtlebot_gazebo gmapping_demo.launch`
-* `roslaunch turtlebot_rviz_launchers view_navigation.launch`
+Added to the `.bashrc` to source the necessary files for opening terminals.
+
+![](screen-shots/testing_slam_turtlebot3.png)
+
+* `roslaunch home_service_world turtlebot3_ground_floor.launch `
+* `roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping` this also opens a rviz window.
+* `roslaunch turtebot3_teleop turtlebot3_teleop_key.launch`
 

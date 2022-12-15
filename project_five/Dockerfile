@@ -33,6 +33,8 @@ protobuf-compiler \
 
 RUN apt-get update && apt-get install -y ros-noetic-openslam-gmapping
 
+RUN apt-get install tmux
+
 # ros-noetic-effort-controllers \ # needed for simple_arm
 
 # create a user that shares the same rights as the host
@@ -41,6 +43,9 @@ RUN groupadd $USERNAME
 RUN useradd -ms /bin/bash -g $USERNAME $USERNAME
 RUN sh -c 'echo "$USERNAME ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
 USER $USERNAME
+
+RUN bash -c echo "source ~/project_five/devel/setup.bash" >> ~/.bashrc
+RUN bash -c echo "source /opt/ros/noetic/devel/setup.bash" >> ~/.bashrc
 
 # entrypoint
 COPY ros_entrypoint.sh /usr/local/bin/ros_entrypoint.sh
