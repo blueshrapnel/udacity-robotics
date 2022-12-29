@@ -60,7 +60,7 @@ rosdep -i install turtlebot_gazebo
 ``` 
 The change to the project workspace `project_five` and run `catkin_make`, then`source devel\setup.bash` etc.
 
-## Testing Slam with Turtlebot3
+## Slam Testing with Turtlebot3
 
 To open `xterm` with a default font and size: `xterm -fa 'Monospace' -fs 14`. The custom world created for previous projects is quite large, so mapping the whole space takes quite a while.  The screen shot below is taken in the early stages. 
 
@@ -71,4 +71,16 @@ Added to the `.bashrc` to source the necessary files for opening terminals.
 * `roslaunch home_service_world turtlebot3_ground_floor.launch `
 * `roslaunch turtlebot3_slam turtlebot3_slam.launch slam_methods:=gmapping` this also opens a rviz window.
 * `roslaunch turtebot3_teleop turtlebot3_teleop_key.launch`
+
+Instead of creating a script file to open multiple `xterm` terminals, `test_slam.sh` is a script which  sources the ROS setup files and then opens the individual tmux panes all within a docker container.  the screen shot aboves shows SLAM running.
+
+
+
+`$ rosrun map_server map_saver -f ~/map` to save a 2-D occupancy grid map to be used for navigation.
+
+##  Localisation and Navigation testing
+
+I created a smaller room for the remainder of the exercise as it is quicker and simpler to move the robot around the space to test navigation and mapping.  Launch AMCL with `home_service_world` launch file `turtlbot3_navigation.launch` which sets the default map appropriately.  The script file `test_local_nav.sh` sets up a tmux session with all the required windows. Once launched, provide a pose estimate of the robot in RViz to align the various maps.  Then add a Nav goal and check that the robot can successfully navigate to the goal.
+
+![Screen shot showing localisation and goal navigation using the ROS Navigation Stack.](screen-shots/testing_goal_nav.png)
 

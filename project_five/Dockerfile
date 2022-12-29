@@ -20,6 +20,7 @@ wget \
 git \
 bash-completion \
 sudo \
+tmux \
 ros-noetic-navigation \
 ros-noetic-map-server \
 ros-noetic-move-base \

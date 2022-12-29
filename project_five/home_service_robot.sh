@@ -2,7 +2,7 @@
 
 # check for optional flag specifying docker image name
 # set default imagename
-imagename="noetic-roomba" 
+imagename="noetic-tbot3" 
 while getopts i: flag
 do
     case "${flag}" in
