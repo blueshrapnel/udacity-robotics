@@ -84,3 +84,34 @@ I created a smaller room for the remainder of the exercise as it is quicker and 
 
 ![Screen shot showing localisation and goal navigation using the ROS Navigation Stack.](screen-shots/testing_goal_nav.png)
 
+Instead of using the 'pose estimate' GUI in Rviz by clicking on the map, we can publish an `/amcl_pose`,  [`PoseWithCovarianceStamped`](http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PoseWithCovarianceStamped.html) message type with nested field names, as shown below.  Run `rosrun pick_objects send_initial_pose` to achieve this programmatically.
+
+```
+header: 
+  seq: 1
+  stamp: 
+    secs: 488
+    nsecs: 755000000
+  frame_id: "map"
+pose: 
+  pose: 
+    position: 
+      x: -3.0872881153697405
+      y: 0.9393199272314398
+      z: 0.0
+    orientation: 
+      x: 0.0
+      y: 0.0
+      z: 0.0016080547786019668
+      w: 0.9999987070790787
+  covariance: [0.18049562705798472, 0.039020922753583154, 0.0, 0.0, 0.0, 0.0, 0.039020922753583154, 0.14936524100517112, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.05703697943547713]
+
+```
+
+```
+rostopic pub /initialpose geometry_msgs/PoseWithCovarianceStamped "{ header: { frame_id: "/map" }, pose: {pose: {position: {x: -3 , y: 1 , z: 0 } , orientation: {x: 0 , y:0 , z:0 ,w:0} } } }"
+```
+
+
+## Reaching Multiple Goals
+`rosrun pick_objects pick_objects`

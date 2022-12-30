@@ -29,7 +29,8 @@ tmux send-keys -t $SESSION:$window 'roslaunch home_service_world turtlebot3_navi
 window=3
 tmux new-window -t $SESSION:$window -n 'pick_objects'
 tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' C-m
-tmux send-keys -t $SESSION:$window 'rorun pick_objects simple_navigation_goals' C-m
+tmux send-keys -t $SESSION:$window 'rosrun pick_objects set_initial_pose' C-m
+tmux send-keys -t $SESSION:$window 'rosrun pick_objects single_navigation_goal' C-m
 
 # attach session on the main window
 tmux attach-session -t $SESSION
