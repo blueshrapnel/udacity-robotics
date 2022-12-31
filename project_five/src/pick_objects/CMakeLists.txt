@@ -140,6 +140,9 @@ target_link_libraries(single_navigation_goal ${catkin_LIBRARIES})
 add_executable(set_initial_pose src src/set_initial_pose.cpp)
 target_link_libraries(set_initial_pose ${catkin_LIBRARIES})
 
+add_executable(pick_objects src src/multiple_navigation_goals.cpp)
+target_link_libraries(pick_objects ${catkin_LIBRARIES})
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use

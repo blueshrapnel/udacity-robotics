@@ -114,4 +114,8 @@ rostopic pub /initialpose geometry_msgs/PoseWithCovarianceStamped "{ header: { f
 
 
 ## Reaching Multiple Goals
+Programmed an executable to move from one pickup location in the top right corner, to a drop-off location in the bottom right corner.  
 `rosrun pick_objects pick_objects`
+![](screen-shots/multiple_goals.png)
+
+
