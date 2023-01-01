@@ -114,8 +114,18 @@ rostopic pub /initialpose geometry_msgs/PoseWithCovarianceStamped "{ header: { f
 
 
 ## Reaching Multiple Goals
-Programmed an executable to move from one pickup location in the top right corner, to a drop-off location in the bottom right corner.  
+Programmed an executable, `multiple_navigation_goals.cpp` to move from one pickup location in the top right corner, to a drop-off location in the bottom right corner.  
 `rosrun pick_objects pick_objects`
 ![](screen-shots/multiple_goals.png)
 
 
+## Virtual Objects
+Following [Ros Marker documentation](http://wiki.ros.org/rviz/Tutorials/Markers%3A%20Basic%20Shapes) to use markers for visualisation in RViz, `rosrun add_markers single_marker`. If markers don't load in RViz, then add them and save the RViz config file.  
+
+Instead of keeping track of odometry and comparing current `amcl_pose` messages with anticipated goal locations, we can keep track of pickup objects by using an identifiable `goal_id` for each goal, and subscribe to the `/move_base/result`, `/move_base/current_goal` [Message Type: geometry_msgs/PoseStamped] or `/move_base/status` [Message Type: actionlib_msgs/GoalStatusArray] topics. These topics only change when a new goal is acceepted by the action server or reached. We can also get the location of the marker from the current goal message instead of using another hardcoded goal location and we can check the status field of the results topic to establish whether the robot has reached the goal, and then delete the marker.  
+
+The status can be decoded, see [message definition](http://docs.ros.org/en/noetic/api/actionlib_msgs/html/msg/GoalStatus.html).
+* `/move_base/current_goal -> pose.position.x, pose.position.y ... ` : just the position and orientation, no goal id.
+* `/move_base/status -> status_list.status: 1` : goal accepted by action server
+* `move_base/status -> status_list.goal_id.id` : "/multiple_navigation_goals-1-(secs).(nsecs)"
+* `/move_base/status -> status_list.status: 3` : goal reached 

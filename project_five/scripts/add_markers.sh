@@ -32,5 +32,11 @@ tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' 
 tmux send-keys -t $SESSION:$window 'rosrun pick_objects set_initial_pose' C-m
 tmux send-keys -t $SESSION:$window 'rosrun pick_objects multiple_navigation_goals' C-m
 
+# run add_markers
+window=4
+tmux new-window -t $SESSION:$window -n 'add_markers'
+tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' C-m
+tmux send-keys -t $SESSION:$window 'rosrun add_markers single_marker' C-m
+
 # attach session on the main window
 tmux attach-session -t $SESSION
