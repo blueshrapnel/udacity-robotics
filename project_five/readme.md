@@ -141,11 +141,9 @@ For this predefined case I implemented a simple solution by encoding the logic o
 
 There are two terminal screen shots which show the relevant ROS_INFO output.
 
-![RViz screen-shot showing Turtlebot arriving at pickup.](screen-shots/1-moving-to-pickup.png)
-![RViz screen-shot showing Turtlebot picking up the object.](screen-shots/2-picking-up.png)
-![RViz screen-shot showing Turtlebot moving to dropoff.](screen-shots/3-moving-to-dropoff.png)
-![Gazebo screen-shot showing Rurtlebot moving to dropoff.](screen-shots/4-moving-to-dropoff.png)
-![RViz screen-shot showing Turtlebot at the dropoff destination.](screen-shots/5-arrived-at-dropoff.png)
-![Gazebo screen-shot showing Turtlebot at the dropoff destination.](screen-shots/6-dropoff.png)
+![RViz screen-shot showing Turtlebot arriving at pickup.](screen-shots/1-moving-to-pickup.png) ![RViz screen-shot showing Turtlebot picking up the object.](screen-shots/2-picking-up.png)
+![RViz screen-shot showing Turtlebot moving to dropoff.](screen-shots/3-moving-to-dropoff.png) ![Gazebo screen-shot showing Rurtlebot moving to dropoff.](screen-shots/4-moving-to-dropoff.png)
+![RViz screen-shot showing Turtlebot at the dropoff destination.](screen-shots/5-arrived-at-dropoff.png) ![Gazebo screen-shot showing Turtlebot at the dropoff destination.](screen-shots/6-dropoff.png)
+
 ![Terminal screen-shot showing output from add_markers node.](screen-shots/add_markers-terminal.png)
 ![Terminal screen-shot showing output from pick_objects node.](screen-shots/pick_objects-terminal.png)
