@@ -40,8 +40,8 @@ int main(int argc, char** argv) {
         goal.target_pose.header.frame_id = "map";
         goal.target_pose.header.stamp = ros::Time::now();
 
-        goal.target_pose.pose.position.x = -7.6;
-        goal.target_pose.pose.position.y = -5.4;
+        goal.target_pose.pose.position.x = -2.45;
+        goal.target_pose.pose.position.y = -4.56;
         goal.target_pose.pose.position.z = 0.0;
         goal.target_pose.pose.orientation.w = 1.0;
 

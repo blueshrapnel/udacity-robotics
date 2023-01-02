@@ -82,6 +82,9 @@ Instead of creating a script file to open multiple `xterm` terminals, `test_slam
 
 I created a smaller room for the remainder of the exercise as it is quicker and simpler to move the robot around the space to test navigation and mapping.  Launch AMCL with `home_service_world` launch file `turtlbot3_navigation.launch` which sets the default map appropriately.  The script file `test_local_nav.sh` sets up a tmux session with all the required windows. Once launched, provide a pose estimate of the robot in RViz to align the various maps.  Then add a Nav goal and check that the robot can successfully navigate to the goal.
 
+[Move Base documentation](http://wiki.ros.org/move_base)
+![](http://wiki.ros.org/move_base?action=AttachFile&do=view&target=overview_tf.png)
+
 ![Screen shot showing localisation and goal navigation using the ROS Navigation Stack.](screen-shots/testing_goal_nav.png)
 
 Instead of using the 'pose estimate' GUI in Rviz by clicking on the map, we can publish an `/amcl_pose`,  [`PoseWithCovarianceStamped`](http://docs.ros.org/en/noetic/api/geometry_msgs/html/msg/PoseWithCovarianceStamped.html) message type with nested field names, as shown below.  Run `rosrun pick_objects send_initial_pose` to achieve this programmatically.
@@ -122,10 +125,27 @@ Programmed an executable, `multiple_navigation_goals.cpp` to move from one picku
 ## Virtual Objects
 Following [Ros Marker documentation](http://wiki.ros.org/rviz/Tutorials/Markers%3A%20Basic%20Shapes) to use markers for visualisation in RViz, `rosrun add_markers single_marker`. If markers don't load in RViz, then add them and save the RViz config file.  
 
-Instead of keeping track of odometry and comparing current `amcl_pose` messages with anticipated goal locations, we can keep track of pickup objects by using an identifiable `goal_id` for each goal, and subscribe to the `/move_base/result`, `/move_base/current_goal` [Message Type: geometry_msgs/PoseStamped] or `/move_base/status` [Message Type: actionlib_msgs/GoalStatusArray] topics. These topics only change when a new goal is acceepted by the action server or reached. We can also get the location of the marker from the current goal message instead of using another hardcoded goal location and we can check the status field of the results topic to establish whether the robot has reached the goal, and then delete the marker.  
+Instead of keeping track of odometry and comparing current `amcl_pose` messages with anticipated goal locations, we can keep track of pickup objects by using an auto-generated `goal_id` for each goal, and subscribe to the `/move_base/result`, `/move_base/current_goal` [Message Type: geometry_msgs/PoseStamped] or `/move_base/status` [Message Type: actionlib_msgs/GoalStatusArray] topics. These topics only change when a new goal is acceepted by the action server or reached. We can also get the location of the marker from the current goal message instead of using another hardcoded goal location and we can check the status field of the results topic to establish whether the robot has reached the goal, and then delete the marker.  
 
-The status can be decoded, see [message definition](http://docs.ros.org/en/noetic/api/actionlib_msgs/html/msg/GoalStatus.html).
+The status can be decoded, see [GoalStatus message definition](http://docs.ros.org/en/noetic/api/actionlib_msgs/html/msg/GoalStatus.html).
 * `/move_base/current_goal -> pose.position.x, pose.position.y ... ` : just the position and orientation, no goal id.
 * `/move_base/status -> status_list.status: 1` : goal accepted by action server
-* `move_base/status -> status_list.goal_id.id` : "/multiple_navigation_goals-1-(secs).(nsecs)"
+* `move_base/status -> status_list.goal_id.id` : "/multiple_navigation_goals-1-(secs).(nsecs)" - auto-generated so not really useful in this case
 * `/move_base/status -> status_list.status: 3` : goal reached 
+
+For this predefined case I implemented a simple solution by encoding the logic of which marker to display in the goal status and current goal call back functions in `add_markers.cpp`.  Script file `/scripts/add_makers.sh` opens all the required terminals and runs the nodes to move the turtlebot robot to the pickup location and then to the drop off location.  The series of screen-shots below show:
+* the turtlebot moving to the pickup location (blue circle marker shown en route)
+* picking up the object (5s pause)
+* robot moving to the dropoff location (pickup marker deleted)
+* robot arrived at the drop off location outside the house (pink square marker), next to the post box.  
+
+There are two terminal screen shots which show the relevant ROS_INFO output.
+
+![RViz screen-shot showing Turtlebot arriving at pickup.](screen-shots/1-moving-to-pickup.png){width=50%}
+![RViz screen-shot showing Turtlebot picking up the object.](screen-shots/2-picking-up.png)
+![RViz screen-shot showing Turtlebot moving to dropoff.](screen-shots/3-moving-to-dropoff.png)
+![Gazebo screen-shot showing Rurtlebot moving to dropoff.](screen-shots/4-moving-to-dropoff.png)
+![RViz screen-shot showing Turtlebot at the dropoff destination.](screen-shots/5-arrived-at-dropoff.png)
+![Gazebo screen-shot showing Turtlebot at the dropoff destination.](screen-shots/6-dropoff.png)
+![Terminal screen-shot showing output from add_markers node.](screen-shots/add_markers-terminal.png)
+![Terminal screen-shot showing output from pick_objects node.](screen-shots/pick_objects-terminal.png)
