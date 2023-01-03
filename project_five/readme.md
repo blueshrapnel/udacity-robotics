@@ -161,7 +161,7 @@ For this predefined case I implemented a simple solution by encoding the logic o
 
 >**Script file `/scripts/add_makers.sh` opens all the required terminals and runs the nodes to move the turtlebot robot to the pickup location and then to the drop off location.**  The series of screen-shots below show:
 * the turtlebot moving to the pickup location (blue circle marker shown en route)
-* picking up the object (5s pause)
+* robot arriving at the pickup location, followed by 5s pause to simulate pickup
 * robot moving to the dropoff location (pickup marker deleted)
 * robot arrived at the drop off location outside the house (pink square marker), next to the post box.  
 
