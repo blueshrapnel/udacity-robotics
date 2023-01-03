@@ -27,13 +27,9 @@ void poseAMCLCallback(const geometry_msgs::PoseWithCovarianceStamped::ConstPtr &
     ROS_INFO("curent pose: %f, %f, %f", poseAMCLx, poseAMCLy, poseAMCLw);
 }*/
 
-void updateMarker() {
+void updateDropOffMarker() {
     // set the frame ID and timestamp
-    marker.header.frame_id = "map";
     marker.header.stamp = ros::Time::now();
-    marker.ns = "add_markers";
-    marker.id = 0;
-    marker.action = visualization_msgs::Marker::ADD;
 
     // set the location of the marker based on the current goal
     marker.pose.position.x = currentGoalx;
@@ -45,21 +41,12 @@ void updateMarker() {
     marker.scale.z = 0.3;
     marker.color.a = 1.0;
     marker.lifetime = ros::Duration();
-    
-    if (goalsReached < 1) {
-        // moving to the pick up location
-        marker.type = visualization_msgs::Marker::SPHERE;
-        marker.color.r = 0.0f;
-        marker.color.g = 0.0f;
-        marker.color.b = 1.0f;
-    } 
-    else {
-        // moving to the drop off location
-        marker.type = visualization_msgs::Marker::CUBE;
-        marker.color.r = 1.0f;
-        marker.color.g = 0.0f;
-        marker.color.b = 1.0f;
-    }
+
+    // moving to the drop off location
+    marker.type = visualization_msgs::Marker::CUBE;
+    marker.color.r = 1.0f;
+    marker.color.g = 0.0f;
+    marker.color.b = 1.0f;
     
 }
 
@@ -69,20 +56,8 @@ void currentGoalCallback(const geometry_msgs::PoseStamped::ConstPtr& msgCurrentG
     currentGoaly = msgCurrentGoal->pose.position.y;
     currentGoalw = msgCurrentGoal->pose.orientation.w;
     goalsSet += 1;
-    updateMarker();
+    updateDropOffMarker();
     
-    if (goalsSet == 1) {
-        // show the marker only if its the pickup location
-        ROS_INFO("showing pickup marker");
-        marker.action = visualization_msgs::Marker::ADD;
-        marker_pub.publish(marker);
-    }
-    if (goalsReached == 1) {
-        // reached pickup location, delete marker
-        ROS_INFO("arrived at pickup, deleting pickup marker");
-        marker.action = visualization_msgs::Marker::DELETE; 
-        marker_pub.publish(marker);
-    }
     ROS_INFO("current goal: %f, %f, %f goals set %d, reached %d", currentGoalx, currentGoaly, currentGoalw, goalsSet, goalsReached);
 }
 
@@ -96,6 +71,12 @@ void goalStatusCallback(const actionlib_msgs::GoalStatusArray::ConstPtr& msg ) {
         status = goalStatus.status;
         if (prevGoalStatus == 1 && status == 3) {
             goalsReached += 1;
+            if (goalsReached == 1) {
+                // reached pickup location, delete marker
+                ROS_INFO("arrived at pickup, deleting pickup marker");
+                marker.action = visualization_msgs::Marker::DELETE; 
+                marker_pub.publish(marker);
+            }
             if (goalsSet == 2) {
                 // reached destination display drop-off marker
                 ROS_INFO("arrived at drop off, showing location marker");
@@ -124,13 +105,38 @@ int main(int argc, char** argv) {
         ROS_WARN_ONCE("blocked while waiting for a subscriber to the marker");
     }
     ROS_INFO("marker_pub ready");
+
+
+    // publish the marker at the pick-up location before the robot starts moving
+    // set the frame ID and timestamp
+    marker.header.frame_id = "map";
+    marker.header.stamp = ros::Time::now();
+    marker.ns = "add_markers";
+    marker.id = 0;
+    marker.type = visualization_msgs::Marker::SPHERE;
+    marker.action = visualization_msgs::Marker::ADD;
+
+    // set the location of the marker
+    marker.pose.position.x = 1.0;
+    marker.pose.position.y = 0.0;
+    marker.pose.position.z = 0.0;
+    marker.pose.orientation.w = 1.0;
+    marker.scale.x = 0.3; 
+    marker.scale.y = 0.3;
+    marker.scale.z = 0.3;
+    marker.color.r = 0.0f;
+    marker.color.g = 0.0f;
+    marker.color.b = 1.0f;
+    marker.color.a = 1.0;
+    marker.lifetime = ros::Duration();
     
+    // publish marker
+    marker_pub.publish(marker);
+
     // set up the subscribers - the call backs control the marker logic
     // ros::Subscriber pose_sub = n.subscribe("amcl_pose", 1000, poseAMCLCallback);
     current_goal_sub = n.subscribe("/move_base/current_goal", 10, currentGoalCallback);
     goal_status = n.subscribe("/move_base/status", 10, goalStatusCallback);
-
-
 
     while (ros::ok()) {
         ros::spinOnce();

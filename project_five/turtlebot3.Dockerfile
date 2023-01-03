@@ -42,20 +42,6 @@ RUN apt-get install -y tmux
 
 ENV TURTLEBOT3_MODEL=burger
 
-# ros-noetic-map-server \
-# ros-noetic-move-base \
-# ros-noetic-amcl \
-# ros-noetic-rtabmap-ros \
-# ros-noetic-rtabmap \
-# libboost-all-dev \
-# libignition-math4-dev \
-# protobuf-compiler \
-# && rm -rf /var/lib/apt/lists/*
-
-# RUN apt-get update && apt-get install -y ros-noetic-openslam-gmapping
-
-# ros-noetic-effort-controllers \ # needed for simple_arm
-
 RUN rm -rf /var/lib/apt/lists/*
 # create a user that shares the same rights as the host
 ARG USERNAME=ros

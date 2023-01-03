@@ -4,7 +4,14 @@
 There is a problem installing dependencies for the Turtlebot packages in ROS Noetic, so I tried to create a docker container with ROS kinetic, and access to an nvidia gpu and Gazebo (9 or 7). However none of that worked seemlessly, on the udactiy workspace there were expired signatures and in the docker container I couldn't get the realsense dependency installed.  
 
 ### TurtleBot3
-So instead I am using turtlebot3 and Noetic, ensuring compatibility with `openslam gmapping`.  Added to the `.bashrc` to source the necessary files for opening terminals.  See `turtlebot3.Dockerfile`, build with `docker build -t noetic-tbot3 -f turtlebot3.Dockerfile . `, which you can then start with `./home_service_robot.sh -i noetic-tbot3`.   The following git repositories have been added to the src dir as submodules.
+So instead I am using turtlebot3 and Noetic, ensuring compatibility with the Ros navigation stack `openslam gmapping`. 
+
+The model used for the robot is Robotis' [TurtleBot 3 Burger](https://emanual.robotis.com/docs/en/platform/turtlebot3/features/#data-of-turtlebot3-burger). The components and a schematic of the robot is shown below.
+
+![Components of the TurtleBot3 Burger robot](screen-shots/turtlebot3_burger_components.png)
+![Schematic of the TurtleBot3 Burger robot](screen-shots/turtlebot3_schematic.png)  
+
+The `turtlebot3.Dockerfile` details the configuration of a docker container which runs ROS Noetic with the ROS navigation stack (explained in more detail below) and all the dependencies required for the Turtlebot3 model.  Build with `docker build -t noetic-tbot3 -f turtlebot3.Dockerfile . `, which you can then start with `./home_service_robot.sh -i noetic-tbot3`.   The Turtlebot3 model and Gazebo simulation packages have been added to the src dir of this repository as submodules, notice the `noetic-devel` branches are checked out.
 
 ```
 cd src
@@ -24,13 +31,6 @@ More information available from:
 * https://www.youtube.com/watch?v=ji2kQXgCjeM
 
 
-```
-mkdir -p ~/project_five/src
-cd ~/project_five/src
-catkin_init_workspace
-cd ..
-catkin_make
-```
 
 ### World File
 Using the basic ground floor world create for earlier tutorials, with some extra features added from the repo of [gazebo models](https://github.com/osrf/gazebo_models).  These are stored in the  `src/turtlebot3/turtlebot3_gazebo/` `launch`, `models` and `worlds` directories.
@@ -42,9 +42,8 @@ git clone https://github.com/ros-perception/slam_gmapping
 git clone https://github.com/turtlebot/turtlebot
 git clone https://github.com/turtlebot/turtlebot_interactions
 git clone https://github.com/turtlebot/turtlebot_simulator
-
 ```
-The `rosdep` package manager tries to install packages that are part of turtlebot which we do not need, so instead of running the following:
+The `rosdep` package manager tries to install packages that are part of turtlebot which we do not need, so instead of automatically discovering the dependencies, run the following:
 ```
 sudo rosdep init
 rosdep update --include-eol-distros
@@ -58,7 +57,32 @@ rosdep -i install turtlebot_teleop
 rosdep -i install turtlebot_rviz_launchers
 rosdep -i install turtlebot_gazebo
 ``` 
-The change to the project workspace `project_five` and run `catkin_make`, then`source devel\setup.bash` etc.
+The change to the project workspace `project_five` and run `catkin_make`, then `source devel\setup.bash` etc.
+
+## Packages Used for the Project
+
+As shown in the `turtlebot3.Dockerfile` the ROS navigation stack used in this project includes the following packages:
+* [ros-noetic-gmapping](http://wiki.ros.org/gmapping)
+* [ros-noetic-amcl](http://wiki.ros.org/amcl)
+* [ros-noetic-map-server](http://wiki.ros.org/map_server)
+* [ros-noetic-navigation](http://wiki.ros.org/navigation)
+* [ros-noetic-move-base](http://wiki.ros.org/move_base)
+
+ROS gmapping is a wrapper for [OpenSlam's Gmapping](https://openslam-org.github.io/gmapping.html) which uses a particle filter to keep track of likely positions of the robot and build maps based on laser range data and the parts of the map that have already been built.  
+
+These maps are stored as images, which represent the world as a 2D grid where white is open space and black is occupied. Each map has an associated `yaml` file which defines the image file name, resolution, origin, etc.  These files are stored in the `src/home_service_world/maps` folder, specifically `single_room.yaml` for the simplified world which is used for the final section of home service project.
+
+In order to use this map, we need to use the map-server to save a map file: `$ rosrun map_server map_saver -f ~/src/maps`.   When using the map for localisation we need to load the map into the mapserver using the launch file `\src\home_service_world\turtlebot3_navigation_launch` with as follows:  `<node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>`.  Then we can use ROS AMCL with the map for localisation.
+
+ROS Navigation is a stack of packages used for navigation, i.e. taking sensor inputs (odometry, range sensor data, and goal pose), integrating this with the map and then it outputs safe velocity commands that are sent to a mobile base.  The stack includes a global planner which uses a path planning algorithm to plan the shortest route from the current location to the goal. The nav stack creates a global costmap which shows how good it is to be in a particular location, e.g. collision with known obstacles or walls have a higher cost than open space.
+
+The local planner takes this path and then attempts to drive the robot along it, using information from the sensors to avoid obstacles, including those which are not on the map.  The local planner also constracts a local cost map where low cost, good places to move are shown as cold colours, and bad places such as walls are shown as hot colors. 
+
+
+ROS move_base is the package that provides the implementation of an action, it links together the global and local planner to accomplish the goal.  When the robot gets close to the goal pose, the action terminates.
+
+Good navigation relies on good localisation so the initial pose estimate is important for this task. It is possible to update the initial pose estimate by publishing a pose with covariance to the `/initial_pose` topic.  Even if the initial estimate is inaccurate, over time as the robot moves around, the pose estimate improves as the candidate particles in the amcl node converge onto the actual position.
+
 
 ## Slam Testing with Turtlebot3
 
@@ -133,7 +157,9 @@ The status can be decoded, see [GoalStatus message definition](http://docs.ros.o
 * `move_base/status -> status_list.goal_id.id` : "/multiple_navigation_goals-1-(secs).(nsecs)" - auto-generated so not really useful in this case
 * `/move_base/status -> status_list.status: 3` : goal reached 
 
-For this predefined case I implemented a simple solution by encoding the logic of which marker to display in the goal status and current goal call back functions in `add_markers.cpp`.  Script file `/scripts/add_makers.sh` opens all the required terminals and runs the nodes to move the turtlebot robot to the pickup location and then to the drop off location.  The series of screen-shots below show:
+For this predefined case I implemented a simple solution by encoding the logic of which marker to display in the goal status and current goal call back functions in `add_markers.cpp`.   
+
+>**Script file `/scripts/add_makers.sh` opens all the required terminals and runs the nodes to move the turtlebot robot to the pickup location and then to the drop off location.**  The series of screen-shots below show:
 * the turtlebot moving to the pickup location (blue circle marker shown en route)
 * picking up the object (5s pause)
 * robot moving to the dropoff location (pickup marker deleted)
