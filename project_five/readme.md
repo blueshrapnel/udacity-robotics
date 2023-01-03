@@ -74,6 +74,8 @@ These maps are stored as images, which represent the world as a 2D grid where wh
 
 In order to use this map, we need to use the map-server to save a map file: `$ rosrun map_server map_saver -f ~/src/maps`.   When using the map for localisation we need to load the map into the mapserver using the launch file `\src\home_service_world\turtlebot3_navigation_launch` with as follows:  `<node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>`.  Then we can use ROS AMCL with the map for localisation.
 
+![ROS Navigation stack](screen-shots/navigation_stack_small.jpg)
+
 ROS Navigation is a stack of packages used for navigation, i.e. taking sensor inputs (odometry, range sensor data, and goal pose), integrating this with the map and then it outputs safe velocity commands that are sent to a mobile base.  The stack includes a global planner which uses a path planning algorithm to plan the shortest route from the current location to the goal. The nav stack creates a global costmap which shows how good it is to be in a particular location, e.g. collision with known obstacles or walls have a higher cost than open space.
 
 The local planner takes this path and then attempts to drive the robot along it, using information from the sensors to avoid obstacles, including those which are not on the map.  The local planner also constracts a local cost map where low cost, good places to move are shown as cold colours, and bad places such as walls are shown as hot colors. 
