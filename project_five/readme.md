@@ -159,7 +159,7 @@ The status can be decoded, see [GoalStatus message definition](http://docs.ros.o
 
 For this predefined case I implemented a simple solution by encoding the logic of which marker to display in the goal status and current goal call back functions in `add_markers.cpp`.   
 
->**Script file `/scripts/add_makers.sh` opens all the required terminals and runs the nodes to move the turtlebot robot to the pickup location and then to the drop off location.**  The series of screen-shots below show:
+>**Script file `/scripts/home_service.sh` opens all the required terminals and runs the nodes to move the turtlebot robot to the pickup location and then to the drop off location.**  The series of screen-shots below show:
 * the turtlebot moving to the pickup location (blue circle marker shown en route)
 * robot arriving at the pickup location, followed by 5s pause to simulate pickup
 * robot moving to the dropoff location (pickup marker deleted)
