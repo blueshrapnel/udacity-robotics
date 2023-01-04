@@ -11,7 +11,7 @@ The model used for the robot is Robotis' [TurtleBot 3 Burger](https://emanual.ro
 ![Components of the TurtleBot3 Burger robot](screen-shots/turtlebot3_burger_components.png)
 ![Schematic of the TurtleBot3 Burger robot](screen-shots/turtlebot3_schematic.png)  
 
-The `turtlebot3.Dockerfile` details the configuration of a docker container which runs ROS Noetic with the ROS navigation stack (explained in more detail below) and all the dependencies required for the Turtlebot3 model.  Build with `docker build -t noetic-tbot3 -f turtlebot3.Dockerfile . `, which you can then start with `./home_service_robot.sh -i noetic-tbot3`.   The Turtlebot3 model and Gazebo simulation packages have been added to the src dir of this repository as submodules, notice the `noetic-devel` branches are checked out.
+The `turtlebot3.Dockerfile` details the configuration of a docker container which runs ROS Noetic with the ROS navigation stack (explained in more detail below) and all the dependencies required for the Turtlebot3 model.  Build with `docker build -t noetic-tbot3 -f turtlebot3.Dockerfile . `, which you can then start with `./home_service_docker.sh -i noetic-tbot3`.   The Turtlebot3 model and Gazebo simulation packages have been added to the src dir of this repository as submodules, notice the `noetic-devel` branches are checked out.
 
 ```
 cd src
@@ -143,9 +143,12 @@ rostopic pub /initialpose geometry_msgs/PoseWithCovarianceStamped "{ header: { f
 
 
 ## Reaching Multiple Goals
-Programmed an executable, `multiple_navigation_goals.cpp` to move from one pickup location in the top right corner, to a drop-off location in the bottom right corner.  
-`rosrun pick_objects pick_objects`
-![](screen-shots/multiple_goals.png)
+Programmed an executable, `multiple_navigation_goals.cpp` to move from one pickup location in the top right corner, to a drop-off location near the post box.  The pickup and dropoff goals are stored as parameters in `pick_objects/config/locations.yaml`.  Script `scripts/pick_objects.sh` demonstrates the robot navigating between the two locations.
+![](screen-shots/pick_objects-terminal-locations.png)
+
+## Add RViz Markers
+Script `scripts/add_markers.sh` loads all the nodes and terminals required to display a marker at the pickup location, wait for 5s, then stop displaying the marker, wait 5s and then display a marker at the dropoff location.
+![](screen-shots/add_markers-terminal-locations.png)
 
 
 ## Virtual Objects

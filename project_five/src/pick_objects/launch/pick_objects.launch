@@ -1,3 +1,4 @@
 <launch>
-    <node name="pick_objects" pkg="pick_objects"
+    <rosparam file="$(find pick_objects)/config/locations.yaml"/>
+    <node name="pick_objects" pkg="pick_objects" type="multiple_navigation_goals" output="screen" />
 </launch>

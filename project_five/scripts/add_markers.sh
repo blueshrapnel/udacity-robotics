@@ -24,21 +24,15 @@ window=2
 tmux new-window -t $SESSION:$window -n 'navigation'
 tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' C-m
 tmux send-keys -t $SESSION:$window 'roslaunch home_service_world turtlebot3_navigation.launch' C-m
+sleep 5
 
 # run add_markers
 window=4
 tmux new-window -t $SESSION:$window -n 'add_markers'
 tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' C-m
-tmux send-keys -t $SESSION:$window 'rosrun add_markers add_markers' C-m
-
-sleep 5
-
-# run multiple goals for pickup and drop off location
-window=3
-tmux new-window -t $SESSION:$window -n 'pick_objects'
-tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' C-m
 tmux send-keys -t $SESSION:$window 'rosrun pick_objects set_initial_pose' C-m
-tmux send-keys -t $SESSION:$window 'rosrun pick_objects multiple_navigation_goals' C-m
+tmux send-keys -t $SESSION:$window 'roslaunch add_markers add_markers.launch' C-m
+
 
 
 # attach session on the main window

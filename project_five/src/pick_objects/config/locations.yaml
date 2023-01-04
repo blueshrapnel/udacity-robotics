@@ -1,0 +1,6 @@
+location/pick_up_x: 1.0
+location/pick_up_y: 0.0
+location/pick_up_w: 1.0
+location/drop_off_x: -2.45
+location/drop_off_y: -4.56
+location/drop_off_w:  1.0

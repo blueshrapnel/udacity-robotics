@@ -29,7 +29,7 @@ tmux send-keys -t $SESSION:$window 'roslaunch home_service_world turtlebot3_navi
 window=4
 tmux new-window -t $SESSION:$window -n 'add_markers'
 tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' C-m
-tmux send-keys -t $SESSION:$window 'rosrun add_markers add_markers' C-m
+tmux send-keys -t $SESSION:$window 'rosrun add_markers home_service' C-m
 
 sleep 5
 
@@ -38,7 +38,7 @@ window=3
 tmux new-window -t $SESSION:$window -n 'pick_objects'
 tmux send-keys -t $SESSION:$window 'source $HOME/project_five/devel/setup.bash' C-m
 tmux send-keys -t $SESSION:$window 'rosrun pick_objects set_initial_pose' C-m
-tmux send-keys -t $SESSION:$window 'rosrun pick_objects multiple_navigation_goals' C-m
+tmux send-keys -t $SESSION:$window 'roslaunch pick_objects pick_objects.launch' C-m
 
 
 # attach session on the main window

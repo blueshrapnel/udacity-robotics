@@ -133,6 +133,9 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/add_markers_node.cpp)
+add_executable(home_service src src/home_service.cpp)
+target_link_libraries(home_service ${catkin_LIBRARIES})
+
 add_executable(add_markers src src/add_markers.cpp)
 target_link_libraries(add_markers ${catkin_LIBRARIES})
 
